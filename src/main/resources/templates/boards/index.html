@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<form id="loginForm" method="post" action="/boards/login.do">
+        <div>
+            <h2><strong>로그인</strong></h2>
+            <ul>
+                <li>
+                    <p><input type="text" name="id" id="id" placeholder="ID를 입력하세요" value="" title="ID" /></p>
+                    <p><input type="password" name="password" id="password" placeholder="PW를 입력하세요" value="" title="PW" /></p>
+                </li>
+                <li><input type="button" name="login" id="login" value="로그인" /></li><br><br>
+                <li><input onclick="location.href='/boards/membership.do' " type="button" value="회원가입"/></li>
+            </ul>
+        </div>
+</form>
+
+<script th:inline="javascript">
+    var message = [[${message}]]
+    if(message != null){
+        alert(message);
+    }
+
+    $("#login").click(function(){
+        var id = $('#id').val();
+        var password = $('#password').val();
+        if(id == ""){
+            alert("ID를 입력하세요.");
+            return false;
+        }
+        if(password == ""){
+            alert("PW를 입력하세요.");
+            return false;
+        }
+         $.ajax({
+              type : "POST",
+              url : "/boards/login.do",
+              data  : { "id": id, "password": password },
+              success : function(res, textStatus, xhr) {
+                 if(res == ''){
+                    alert("입력하신 정보를 다시 확인해주세요")
+                 }
+                 window.location.href = '/boards/main.do';
+              },
+              error : function(request, status, error) {
+                  alert("code:" + request.status + "\n" + "error:" + error);
+              }
+          })
+    });
+
+    $("#password").keypress(function( event ) {
+        if ( event.which == 13 ) {
+            $("#login").click();
+        }
+    });
+</script>
+
+</body>
+</html>

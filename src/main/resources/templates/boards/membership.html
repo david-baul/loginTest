@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>테스트 페이지</title>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <base href="/" />
+</head>
+<body>
+
+<form id="singUpForm" method="post" action="/boards/signup.do">
+  <div>
+    <h2><strong>회원가입</strong></h2>
+    <ul>
+      <li>
+        <p><input type="text" name="id" id="id" placeholder="가입하실 ID를 입력하세요" value="" title="가입ID" /></p>
+        <p><input type="password" name="password" id="password" placeholder="가입하실 PW를 입력하세요" value="" title="가입PW" /></p>
+      </li>
+      <li><input type="button" name="signUp" id="signUp" value="가입"/></li><br><br>
+      <li><input onclick="location.href='/boards/index.do' " type="button" value="로그인화면"/></li>
+    </ul>
+  </div>
+</form>
+<script th:inline="javascript">
+  var message = [[${message}]]
+    if(message != null){
+        alert(message);
+    }
+
+  $("#signUp").click(function(){
+        var id = $('#id').val();
+        var password = $('#password').val();
+        if(id == ""){
+            alert("가입하실 ID를 입력하세요.");
+            return false;
+        }
+        if(password == ""){
+            alert("가입하실 PW를 입력하세요.");
+            return false;
+        }
+         $.ajax({
+              type : "POST",
+              url : "/boards/signup.do",
+              data  : { "id": id, "password": password },
+              success : function(res, textStatus, xhr) {
+                 if(res == ''){
+                    alert("ID가 존재합니다 다른 ID로 가입해주세요")
+                    window.location.href = '/boards/membership.do';
+                 }else {
+                    window.location.href = '/boards/index.do';
+                 }
+              },
+              error : function(request, status, error) {
+                  alert("code:" + request.status + "\n" + "error:" + error);
+              }
+          })
+    });
+
+  $("#password").keypress(function( event ) {
+      if ( event.which == 13 ) {
+        $("#signUp").click();
+      }
+  });
+</script>
+
+</body>
+</html>

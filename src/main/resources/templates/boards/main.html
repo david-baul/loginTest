@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>테스트 페이지</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<h3>메인화면</h3>
+<div>[[${id}]]님 환영합니다</div>
+<div>마지막 로그인 시각은 [[${loginTime}]]입니다</div>
+<div class ="cnt">총 로그인 횟수 : (5회이상시 표출)</div>
+
+<br>
+<input type="button" name="logout" id="logout" value="로그아웃" />
+<br><br>
+
+<div id="container">
+    <button id="btn-modal">모달 창 열기 버튼</button>
+    <div id="lorem-ipsum"></div>
+</div>
+
+<div id="modal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="title">
+            <h2>모달창 - 현재시간</h2>
+        </div>
+        <div class="close-area">X</div>
+        <div class="content">
+            <div class="clock"></div>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    let cnt = [[${cnt}]]
+    let cntText = "총 로그인 횟수 : "+ cnt + "회"
+    if(cnt > 4){
+        $(".cnt").html(cntText)
+    }
+</script>
+<script src="/js/main.js"></script>
+</body>
+</html>

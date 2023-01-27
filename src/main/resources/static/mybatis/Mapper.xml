@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.logintest.mapper.UserMapper">
+
+    <select id="getId" resultType="java.util.HashMap">
+        SELECT * FROM User WHERE id= #{id} AND password = #{password}
+    </select>
+
+    <select id="getDupId" resultType="java.util.HashMap">
+        SELECT * FROM User WHERE id= #{id}
+    </select>
+
+    <select id="getLoginTime" resultType="java.util.HashMap">
+        SELECT loginTime FROM checkLoginTime WHERE id = #{id} ORDER BY loginTime DESC LIMIT 1
+    </select>
+
+    <select id="getLoginCnt" resultType="java.util.HashMap">
+        SELECT COUNT(*) cnt FROM checkLoginTime WHERE id = #{id}
+    </select>
+
+    <insert id="insertUser" parameterType="java.util.HashMap">
+        INSERT INTO User(id, password) VALUES (#{id}, #{password})
+    </insert>
+
+    <insert id="insertLoginTime" parameterType="java.util.HashMap">
+        INSERT INTO checkLoginTime(id, logintime) VALUES (#{id}, NOW())
+    </insert>
+
+</mapper>
